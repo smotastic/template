@@ -7,15 +7,9 @@ A small starting point for new projects. It provides agent guidance, engineering
 - `AGENTS.md` contains short, project-wide agent rules.
 - `docs/engineering/` contains reusable engineering guidance.
 - `docs/adr/` is the default location for project ADRs.
-- `.agents/skills/` contains user-invoked skills for ADRs, commits, pushes, and pull requests.
-
-## Start a new project
-
-1. Copy this repository into the new project.
-2. Replace the project description and placeholders in `AGENTS.md`.
-3. Update this README with the project name and setup instructions.
-4. Add project-specific commands only when the agent cannot find them in the project files.
-5. Remove guidance or skills that the project does not need.
+- `.agents/skills/` contains user-invoked skills for repository creation, ADRs, commits, pushes, and pull requests.
+- `.github/pull_request_template.md` provides the pull request form for this template repository and copied projects.
+- `.github/workflows/validate.yml.example` is the inactive base workflow for copied projects.
 
 ## Progressive disclosure
 
@@ -28,6 +22,7 @@ The main references are:
 - [`write-adr` skill](.agents/skills/write-adr/SKILL.md)
 - [`commit-and-push` skill](.agents/skills/commit-and-push/SKILL.md)
 - [`create-pr` skill](.agents/skills/create-pr/SKILL.md)
+- [`create-repo-from-template` skill](.agents/skills/create-repo-from-template/SKILL.md)
 
 ## Skills
 
@@ -36,3 +31,4 @@ These skills are user-invoked. They do not run Git or GitHub changes without an 
 - `write-adr` creates, updates, supersedes, or reviews ADRs.
 - `commit-and-push` stages, commits, and pushes all current changes. Its commit format matches the `yeet` Pi extension.
 - `create-pr` uses the GitHub CLI (`gh`) to create a regular open pull request.
+- `create-repo-from-template` copies and customizes this template for a new repository.

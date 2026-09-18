@@ -52,6 +52,10 @@ Completion criterion: the destination and every required project value are known
 4. If the destination exists, list its contents.
 5. If the destination contains `.git`, report that it is already a Git repository and ask whether to use it. Preserve its Git metadata. Do not delete `.git` or change its current branch without explicit approval.
 6. If the destination is non-empty, show the files that would conflict with template files. Ask once whether to merge and overwrite those conflicts.
+7. If `.github/workflows/validate.yml.example` is in the source, include this activation in the plan:
+   - Copy it to `.github/workflows/validate.yml` in the destination.
+   - Remove the `.example` file after activation.
+   - List either workflow path as a conflict when it already exists in the destination.
 
 Show a local creation plan that includes:
 
@@ -59,6 +63,7 @@ Show a local creation plan that includes:
 - The files that will be copied.
 - The files that will be excluded.
 - The files that will be changed for the project name and description.
+- The workflow activation and its final path.
 - Any conflicts.
 - Whether the skill will initialize Git or use existing Git metadata.
 
@@ -75,10 +80,15 @@ Completion criterion: the destination state is known, every conflict is listed, 
 3. Keep all other template files, including all other `.agents/skills/` files.
 4. Preserve existing destination files that are not conflicts.
 5. Overwrite conflicting destination files only when the user approved that action.
+6. When `.github/workflows/validate.yml.example` was copied:
+   - Rename it to `.github/workflows/validate.yml` when the active path does not exist.
+   - Replace an existing active path only when that conflict was approved.
+   - Stop before changing either path when the conflict was not approved.
+7. Report the activated workflow path and confirm that the `.example` file is absent from the destination.
 
 Use absolute paths for filesystem commands. Use a method such as `rsync` that copies hidden files and supports the exclusion list.
 
-Completion criterion: every source file except the two exclusions exists at the destination, and approved conflicts have the approved contents.
+Completion criterion: every source file except the two exclusions exists at the destination, the approved workflow activation is complete, and approved conflicts have the approved contents.
 
 ## Customize project files
 
@@ -96,10 +106,13 @@ Update `README.md`:
 
 - Replace `Project Template` with the project name.
 - Replace the opening template description with the project description.
-- Replace template-only instructions about starting a new project with the supplied setup instructions.
-- Remove that setup section when no setup instructions were supplied.
-- Keep the reusable documentation and skill descriptions that still apply.
+- Keep the progressive disclosure guidance and reusable skill descriptions that still apply.
+- Remove the `create-repo-from-template` skill entry after copying.
+- Remove repository-creation wording from the included skill list after copying.
+- Remove the inactive workflow example entry after activating the workflow.
 - Remove template-specific wording that would describe the new repository as a template.
+
+The creation skill owns all instructions for copying and setting up a repository. Do not add those instructions to the copied README.
 
 Do not remove project files or skills unless the user explicitly requests it.
 
@@ -112,6 +125,7 @@ From the destination repository, show:
 - `git status`.
 - The files copied.
 - The files excluded.
+- The activated workflow path.
 - The final project name and description.
 - The complete diff for `AGENTS.md` and `README.md`.
 
@@ -184,6 +198,7 @@ Report:
 
 - The destination path.
 - The project name.
+- The activated workflow path.
 - The initial commit and branch.
 - The GitHub repository URL when one was created.
 - Any checks that ran.
