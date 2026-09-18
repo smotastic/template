@@ -7,9 +7,33 @@ A small starting point for new projects. It provides agent guidance, engineering
 - `AGENTS.md` contains short, project-wide agent rules.
 - `docs/engineering/` contains reusable engineering guidance.
 - `docs/adr/` is the default location for project ADRs.
-- `.agents/skills/` contains user-invoked skills for repository creation, ADRs, commits, pushes, and pull requests.
+- `.agents/skills/` contains user-invoked skills for the small spec workflow, repository creation, ADRs, commits, pushes, and pull requests.
 - `.github/pull_request_template.md` provides the pull request form for this template repository and copied projects.
 - `.github/workflows/validate.yml.example` is the inactive base workflow for copied projects.
+
+## Small spec workflow
+
+This template uses a local, lightweight workflow. It does not require the official Spec Kit CLI or a `.specify/` directory.
+
+Each feature stores its artifacts in one directory:
+
+```text
+specs/<feature>/
+├── spec.md
+├── plan.md
+└── tasks.md
+```
+
+Run the skills in order. Pass the feature directory to every step after `specify`:
+
+```text
+/speckit-specify Add a photo organizer with albums grouped by date.
+/speckit-plan specs/photo-organizer
+/speckit-tasks specs/photo-organizer
+/speckit-implement specs/photo-organizer
+```
+
+The skills are intentionally small. They do not create branches, run hooks, install tools, or create extra design documents.
 
 ## Progressive disclosure
 
